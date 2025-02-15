@@ -1,5 +1,5 @@
 # Password Manager App
-This is a simple, secure password manager built with Python and Streamlit. It allows you to store, retrieve, search, and delete passwords with encryption using the `cryptography` library.
+This is a secure password manager built with Python and Streamlit. It allows you to store, retrieve, search, and delete passwords with encryption using the `cryptography` library.
 
 ## Features
 

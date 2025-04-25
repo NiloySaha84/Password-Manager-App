@@ -1,1 +1,2 @@
-nnnn
+streamlit==1.33.0
+cryptography==42.0.5

@@ -62,6 +62,8 @@ if not st.session_state.authenticated:
             else:
                 try:
                     pm = PasswordManager(master_password)
+                    # Save a special validation entry to verify password correctness in future
+                    pm.save_password("__validation__", "validate", "PasswordManagerInitialized!", "System", "Validation entry")
                     st.session_state.authenticated = True
                     st.session_state.pm = pm
                     st.success("✅ Password Manager initialized successfully!")
@@ -73,8 +75,10 @@ if not st.session_state.authenticated:
             if master_password:
                 try:
                     pm = PasswordManager(master_password)
-                    # Verify by trying to get passwords
-                    pm.get_all_passwords()
+                    # Attempt to access the validation entry to verify the master password
+                    validation_entry = pm.get_all_passwords().get("__validation__")
+                    if not validation_entry or validation_entry.get("password") != "PasswordManagerInitialized!":
+                        raise ValueError("Validation entry missing or incorrect.")
                     st.session_state.authenticated = True
                     st.session_state.pm = pm
                     st.success("✅ Unlocked successfully!")

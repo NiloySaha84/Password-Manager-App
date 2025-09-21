@@ -65,6 +65,7 @@ class PasswordManager:
         return key
 
     def _ensure_backward_compatibility(self):
+        """Ensure backward compatibility with existing data"""
         if os.path.exists(DATA_FILE):
             try:
                 with open(DATA_FILE, "r") as f:
@@ -102,8 +103,10 @@ class PasswordManager:
 
     def save_password(self, website: str, username: str, password: str,
                       category: str = "Other", notes: str = "") -> bool:
+        """Save a password with additional metadata"""
         try:
             encrypted_password = self.cipher.encrypt(password.encode()).decode('utf-8')
+
             try:
                 with open(DATA_FILE, "r") as file:
                     data = json.load(file)
@@ -128,6 +131,7 @@ class PasswordManager:
             return False
 
     def get_all_passwords(self) -> Dict[str, Dict[str, str]]:
+        """Get all passwords (fixed the bug in original code)"""
         try:
             with open(DATA_FILE, "r") as file:
                 data = json.load(file)
@@ -153,6 +157,7 @@ class PasswordManager:
         return decrypted_data
 
     def search_passwords(self, search_term: str) -> Dict[str, Dict[str, str]]:
+        """Enhanced search across website, username, category, and notes"""
         passwords = self.get_all_passwords()
         results = {}
 
@@ -167,6 +172,7 @@ class PasswordManager:
         return results
 
     def delete(self, website: str) -> bool:
+        """Delete a password entry"""
         try:
             with open(DATA_FILE, "r") as file:
                 data = json.load(file)
@@ -518,6 +524,3 @@ def delete(website: str) -> bool:
             json.dump(data, file, indent=4)
         return True
     return False
-
-
-
